@@ -8,38 +8,35 @@
   </head>
   <body class="grid place-items-center box-border min-h-screen bg-[#E8EAEE] py-6 px-8">
 
-    <div class="w-full max-w-2xl mx-auto">
+    <div class="w-full max-w-[440px] mx-auto">
 
       <form 
         action="" 
         class="flex flex-col bg-white rounded-lg p-6 shadow-md gap-7 border border-slate-300"
       >
       
-        <h2 class="font-bold text-2xl text-center">
+        <h2 class="font-bold text-2xl text-center text-[#20232A]">
           Ingresar
         </h2>
 
-        <fieldset class="flex flex-col border border-slate-400 p-6 gap-4 rounded-lg">
-          <legend class="text-sm font-semibold px-1">
-            Iniciar sesión
-          </legend>
+        <div class="flex flex-col gap-6">
 
-          <label for="correo" class="text-md font-semibold flex flex-col">
+          <label for="correo" class="text-md text-[#20232A] font-semibold flex flex-col">
             Correo electrónico
             <input type="text" id="correo" placeholder="Ej: juan@gmail.com" class="border border-slate-400 rounded-lg py-2 px-2">
           </label>
 
-          <label for="clave" class="text-md font-semibold flex flex-col">
+          <label for="clave" class="text-md text-[#20232A] font-semibold flex flex-col">
             Contraseña
             <input type="password" id="clave" placeholder="Ingresa tu contraseña" class="border border-slate-400 rounded-lg py-2 px-2">
           </label>
-        </fieldset>
+        </div>
 
         <button type="submit" class="flex justify-center bg-[#3B82F6] hover:bg-[#2563EB] active:bg-[#1D4ED8] text-slate-100 font-semibold rounded-lg py-2 cursor-pointer">
           Ingresar
         </button>
 
-        <a href="./register.html" class="text-center text-[14px] font-semibold">
+        <a href="./register.html" class="w-fit mx-auto text-[14px] text-gray-600 hover:text-[#3B82F6] hover:underline font-semibold p-1 px-3 rounded-full">
           ¿No tienes una cuenta? Regístrate
         </a>
       </form>

@@ -8,34 +8,34 @@
   </head>
   <body class="grid place-items-center box-border min-h-screen bg-[#E8EAEE] py-6 px-8">
     
-    <div class="w-full max-w-2xl mx-auto">
+    <div class="w-full max-w-[520px] mx-auto">
       
       <form 
         action="" 
         class="flex flex-col bg-white rounded-lg p-6 shadow-md gap-7 border border-slate-300"
       >
         
-        <h2 class="font-bold text-2xl text-center">
+        <h2 class="font-bold text-2xl text-center text-[#20232A]">
           Registrarse
         </h2>
 
         <!--Datos personales-->
         <fieldset class="flex flex-col border border-slate-400 p-6 gap-4 rounded-lg">
-          <legend class="text-sm font-semibold px-1">
+          <legend class="text-sm text-[#20232A] font-semibold px-1">
             Datos Personales
           </legend>
 
-          <label for="nombre" class="text-md font-semibold flex flex-col">
+          <label for="nombre" class="text-md text-[#20232A] font-semibold flex flex-col">
             Nombre
             <input type="text" id="nombre" placeholder="Ej: Juan" class="border border-slate-400 rounded-lg py-2 px-2">
           </label>
 
-          <label for="apellido" class="text-md font-semibold flex flex-col">
+          <label for="apellido" class="text-md text-[#20232A] text-[#20232A] font-semibold flex flex-col">
             Apellido
             <input type="text" id="apellido" placeholder="Ej: Rodriguez" class="border border-slate-400 rounded-lg py-2 px-2">
           </label>
 
-          <label for="correo" class="text-md font-semibold flex flex-col">
+          <label for="correo" class="text-md text-[#20232A] font-semibold flex flex-col">
             Correo
             <input type="text" id="correo" placeholder="Ej: juan@gmail.com" class="border border-slate-400 rounded-lg py-2 px-2">
           </label>
@@ -43,11 +43,11 @@
 
         <!--Seguridad-->
         <fieldset class="flex flex-col border border-slate-400 p-6 gap-4 rounded-lg">
-          <legend class="text-sm font-semibold px-1">
+          <legend class="text-sm text-[#20232A] font-semibold px-1">
             Seguridad
           </legend>
 
-          <label for="clave" class="text-md font-semibold flex flex-col">
+          <label for="clave" class="text-md text-[#20232A] font-semibold flex flex-col">
             Contraseña
             <input type="password" id="clave" placeholder="Ej: Juan123." class="border border-slate-400 rounded-lg py-2 px-2">
             <span class="text-[11px] font-semibold text-slate-700">
@@ -55,7 +55,7 @@
             </span>
           </label>
 
-          <label for="validar" class="text-md font-semibold flex flex-col">
+          <label for="validar" class="text-md text-[#20232A] font-semibold flex flex-col">
             Validar Contraseña
             <input type="password" id="validar" placeholder="Repite la misma contraseña" class="border border-slate-400 rounded-lg py-2 px-2">
           </label>
@@ -65,7 +65,7 @@
           Enviar
         </button>
 
-        <a href="./login.html" class="text-center text-[14px] font-semibold">
+        <a href="./login.html" class="w-fit mx-auto text-[14px] text-gray-600 hover:text-[#3B82F6] hover:underline font-semibold p-1 px-3 rounded-full">
           ¿Ya tienes una cuenta? Ingresa
         </a>
       </form>
