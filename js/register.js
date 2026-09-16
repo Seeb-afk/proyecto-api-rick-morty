@@ -11,6 +11,7 @@ formulario.addEventListener("submit", (event) => {
 
   const correoExiste = dataUsers.results.filter((user) => user.correo === correoIngresado);
   
+  // Verificar si correo existe, si es asi no puede registrarlo
   const mensaje = document.getElementById("message");
   if (correoExiste.length > 0) {
     mensaje.className = "p-4 bg-red-500 rounded-lg text-red-100";
@@ -18,6 +19,7 @@ formulario.addEventListener("submit", (event) => {
     return;
   }
 
+  // Datos ingresados
   const userData = {
 
     id: dataUsers.results.length + 1,
@@ -33,6 +35,7 @@ formulario.addEventListener("submit", (event) => {
     clave: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/
   };
 
+  // Verifica si los campos estan vacios
   let errores = [];
   Object.entries(userData).forEach(([key, value]) => {
 
@@ -68,9 +71,10 @@ formulario.addEventListener("submit", (event) => {
   if(errores.length > 0) {
     mensaje.className = "p-4 bg-red-500 rounded-lg text-red-100";
     mensaje.innerHTML = errores.map(err => `<ul class="text-red-100">${err}</ul>`).join("");
-    return
+    return;
   }
 
+  // Si todo correcto, lo guarda y manda a login
   mensaje.className = "p-4 bg-green-500 rounded-lg text-green-100";
   mensaje.innerHTML = `<ul class="text-green-100">Te has registrado correctamente.</ul>`;
   dataUsers.results.push(userData);
