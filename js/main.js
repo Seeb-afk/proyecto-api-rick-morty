@@ -1,5 +1,12 @@
 import { dataCharacters } from "../services/characters.js";
 
+
+/**
+ * @async
+ * @function showCharacters
+ * 
+ * @description Inserta dentro de la etiqueta main todos los characters que encuentre en dataCharacters
+ */
 async function showCharacters() {
   const cards = document.getElementById("cards-container");
   dataCharacters.results.forEach((character) => {
