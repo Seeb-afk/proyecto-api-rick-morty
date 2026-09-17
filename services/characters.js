@@ -1,16 +1,18 @@
 import { endpoints } from "../config/endpoints.js";
 
-async function getCharacters(url) {
-  
-  try {
+/**
+ * @async
+ * @function getCharacters
+ * 
+ * @description hace un pedido a la API para los datos de los personajes
+ */
+export async function getCharacters(url = endpoints.characters) {
 
-    const response = await fetch(url);
-    const data = await response.json();
+  const response = await fetch(url);
 
-    return data;
-  } catch (error) {
-    return `Ha ocurrido un evento inesperado: ${error}`;
+  if (!response.ok) {
+    throw new Error(`Error ${response.status}: no se pudieron cargar los personajes.`);
   }
-};
 
-export const dataCharacters = await getCharacters(endpoints.characters);
+  return response.json();
+};
