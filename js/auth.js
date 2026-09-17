@@ -1,5 +1,12 @@
+// Se escoge este metodo por que es mas facil de manipular que las cookies
+
 const sessionKey = "rickandmorty-session"
 
+/**
+ * @function getSession
+ * 
+ * @description verifica si hay una sesion en sessionStorage
+ */
 export function getSession() {
   try {
     const key = sessionStorage.getItem(sessionKey);
