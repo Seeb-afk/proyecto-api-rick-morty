@@ -22,7 +22,7 @@ async function showCharacters() {
 
           <div class="flex items-center gap-2 mt-1">
             <span class="font-medium text-sm">${character.status}</span>
-            <span class="text-sm text-gray-500">&bull;</span>
+            <span class="text-sm text-gray-500">·</span>
             <p class="text-sm text-gray-600">${character.species}</p>
           </div>
 
@@ -37,7 +37,7 @@ async function showCharacters() {
     cards.insertAdjacentHTML("beforeend", cardHTML);
   });
 };
-
+showCharacters();
 const session = getSession();
 
 if (session) {
