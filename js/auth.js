@@ -9,22 +9,31 @@ export function getSession() {
   };
 };
 
+/**
+ * @function saveSession
+ * 
+ * @description guarda la sesion de sessionStorage
+ */
 export function saveSession(session) {
   sessionStorage.setItem((sessionKey), JSON.stringify(session));
 };
 
+
+/**
+ * @function clearSession
+ * 
+ * @description elimina la sesion de sessionStorage
+ */
 export function clearSession() {
   sessionStorage.removeItem(sessionKey);
 };
 
-export function requireAuth (loginUrl = "../identifier/login.html") {
-  if (!getSession()) window.location.href = loginUrl;
-};
-
-export function redirectIfAutenticated(mainUrl = "../app/main.html") {
-  if (getSession()) window.location.href = mainUrl;
-};
-
+/**
+ * @function logout
+ * 
+ * @description (Solo debe usarse dentro de los links protegidos) Sales del contenido principal 
+ *               y Eliminas los datos de sessionStorage
+ */
 export function logout(loginUrl = "../identifier/login.html") {
   clearSession();
   window.location.href = loginUrl;

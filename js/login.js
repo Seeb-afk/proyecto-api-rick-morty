@@ -1,7 +1,5 @@
 import { dataUsers } from "./users.js";
-import { saveSession, redirectIfAutenticated } from "./auth.js";
-
-redirectIfAutenticated();
+import { saveSession } from "./auth.js";
 
 let formularioLogin = document.getElementById("loginForm")
 formularioLogin.addEventListener("submit", (event) => {

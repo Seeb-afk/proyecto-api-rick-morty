@@ -1,7 +1,5 @@
 import { dataCharacters } from "../services/characters.js";
-import { requireAuth, getSession } from "./auth.js";
-
-requireAuth();
+import { getSession } from "./auth.js";
 
 /**
  * @async

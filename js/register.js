@@ -1,7 +1,4 @@
 import { dataUsers, saveUsers } from "./users.js";
-import { redirectIfAutenticated } from "./auth.js";
-
-redirectIfAutenticated();
 
 let formulario = document.getElementById("form");
 
