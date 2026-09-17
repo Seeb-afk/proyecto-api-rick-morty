@@ -11,7 +11,8 @@
     <div class="w-full max-w-[440px] mx-auto">
 
       <form 
-        action="" 
+        action=""
+        id="loginForm" 
         class="flex flex-col bg-white rounded-lg p-6 shadow-md gap-7 border border-gray-300"
       >
       
@@ -32,6 +33,10 @@
           </label>
         </div>
 
+        <ul id="message">
+          <!--Aqui va el mensaje por si da error-->
+        </ul>
+
         <button type="submit" class="flex justify-center bg-[#3B82F6] hover:bg-[#2563EB] active:bg-[#1D4ED8] text-gray-100 font-semibold rounded-lg py-2 cursor-pointer">
           Ingresar
         </button>
@@ -41,6 +46,6 @@
         </a>
       </form>
     </div>
-    <script src="../js/login.js"></script>
+    <script type="module" src="../js/login.js"></script>
   </body>
 </html>

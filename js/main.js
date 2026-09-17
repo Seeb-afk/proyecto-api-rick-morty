@@ -1,5 +1,7 @@
 import { dataCharacters } from "../services/characters.js";
+import { requireAuth, getSession } from "./auth.js";
 
+requireAuth();
 
 /**
  * @async
@@ -8,6 +10,7 @@ import { dataCharacters } from "../services/characters.js";
  * @description Inserta dentro de la etiqueta main todos los characters que encuentre en dataCharacters
  */
 async function showCharacters() {
+  
   const cards = document.getElementById("cards-container");
   dataCharacters.results.forEach((character) => {
 
@@ -37,4 +40,8 @@ async function showCharacters() {
   });
 };
 
-showCharacters();
+const session = getSession();
+
+if (session) {
+  showCharacters();
+}
