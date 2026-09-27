@@ -34,16 +34,19 @@
           <label for="nombre" class="text-md text-[#20232A] font-semibold flex flex-col">
             Nombre
             <input type="text" id="nombre" placeholder="Ej: Juan" class="border border-gray-400 rounded-lg py-2 px-2">
+            <p id="error-nombre" class="hidden text-[12px] font-semibold text-red-600 mt-1"></p>
           </label>
 
           <label for="apellido" class="text-md text-[#20232A] text-[#20232A] font-semibold flex flex-col">
             Apellido
             <input type="text" id="apellido" placeholder="Ej: Rodriguez" class="border border-gray-400 rounded-lg py-2 px-2">
+            <p id="error-apellido" class="hidden text-[12px] font-semibold text-red-600 mt-1"></p>
           </label>
 
           <label for="correo" class="text-md text-[#20232A] font-semibold flex flex-col">
             Correo
             <input type="text" id="correo" placeholder="Ej: juan@gmail.com" class="border border-gray-400 rounded-lg py-2 px-2">
+            <p id="error-correo" class="hidden text-[12px] font-semibold text-red-600 mt-1"></p>
           </label>
         </fieldset>
 
@@ -59,16 +62,18 @@
             <span class="text-[11px] font-semibold text-gray-700">
               Nota: Mínimo 8 caracteres, debe contener al menos 1 mayúscula, 1 minúscula, 1 número y 1 caracter especial.
             </span>
+            <p id="error-clave" class="hidden text-[12px] font-semibold text-red-600 mt-1"></p>
           </label>
 
           <label for="validar" class="text-md text-[#20232A] font-semibold flex flex-col">
             Validar Contraseña
             <input type="password" id="validar" placeholder="Repite la misma contraseña" class="border border-gray-400 rounded-lg py-2 px-2">
+            <p id="error-validar" class="hidden text-[12px] font-semibold text-red-600 mt-1"></p>
           </label>
         </fieldset>
 
-        <ul id="message">
-          <!--Aqui va la validacion-->
+        <ul id="message" class="hidden">
+          <!--Aqui va el mensaje de exito-->
         </ul>
 
         <button type="submit" class="flex justify-center bg-[#3B82F6] hover:bg-[#2563EB] active:bg-[#1D4ED8] text-gray-100 font-semibold rounded-lg py-2 cursor-pointer">
