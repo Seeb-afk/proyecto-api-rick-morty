@@ -1,20 +1,38 @@
 import { getCharacters } from "../services/characters.js";
+import { endpoints } from "../config/endpoints.js";
 import { getSession } from "./auth.js";
+
+const cards = document.getElementById("cards-container");
+const btnPrev = document.getElementById("prev-page");
+const btnNext = document.getElementById("next-page");
+const pageIndicator = document.getElementById("page-indicator");
+
+// Pagina que se esta mostrando, cambia con los botones de la paginacion
+let paginaActual = 1;
 
 /**
  * @async
  * @function showCharacters
  * 
- * @description Inserta dentro de la etiqueta main todos los characters que encuentre en la API
+ * @param {number} page Pagina que se le pide a la API, por defecto la primera
+ * 
+ * @description Inserta dentro de la etiqueta main todos los characters de la pagina pedida
  */
-async function showCharacters() {
+async function showCharacters(page = 1) {
 
-  const cards = document.getElementById("cards-container");
+  paginaActual = page;
+
+  // Se bloquean los botones mientras llegan los datos para no pedir paginas distintas a la vez
+  btnPrev.disabled = true;
+  btnNext.disabled = true;
+
   cards.innerHTML = `<p class="col-span-full text-center text-gray-500 py-6">Cargando personajes...</p>`;
 
   try {
 
-    const data = await getCharacters();
+    // La API devuelve 20 personajes por pagina, el total de paginas viene en data.info
+    const data = await getCharacters(`${endpoints.characters}?page=${page}`);
+
     cards.innerHTML = "";
 
     data.results.forEach((character) => {
@@ -43,11 +61,45 @@ async function showCharacters() {
 
       cards.insertAdjacentHTML("beforeend", cardHTML);
     });
+
+    pageIndicator.textContent = `Página ${page} de ${data.info.pages}`;
+
+    // La API llega sin next en la ultima pagina y sin prev en la primera
+    btnPrev.disabled = data.info.prev === null;
+    btnNext.disabled = data.info.next === null;
   } catch (error) {
     cards.innerHTML = `<p class="col-span-full text-center text-red-500 py-6">No se pudieron cargar los personajes.</p>`;
+    pageIndicator.textContent = `Página ${page}`;
+    btnPrev.disabled = paginaActual <= 1;
+    btnNext.disabled = false;
     console.error(error);
   };
 };
+
+/**
+ * @function goPrevPage
+ * 
+ * @description Pide la pagina anterior, el boton permanece deshabilitado en la primera
+ */
+function goPrevPage() {
+
+  if (paginaActual > 1) {
+    showCharacters(paginaActual - 1);
+  };
+};
+
+/**
+ * @function goNextPage
+ * 
+ * @description Pide la pagina siguiente, el boton permanece deshabilitado en la ultima
+ */
+function goNextPage() {
+
+  showCharacters(paginaActual + 1);
+};
+
+btnPrev.addEventListener("click", goPrevPage);
+btnNext.addEventListener("click", goNextPage);
 
 const session = getSession();
 
