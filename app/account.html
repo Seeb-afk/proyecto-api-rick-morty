@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi cuenta</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <script>
+      if (!sessionStorage.getItem("rickandmorty-session")) {
+        window.location.replace("../identifier/login.html");
+      };
+    </script>
+  </head>
+  <body class="flex flex-col box-border bg-[#E8EAEE] w-full">
+
+    <div class="flex flex-col w-full min-h-screen">
+
+      <header class="sticky top-0 flex items-center justify-between w-full h-16 bg-white border-b border-gray-300 px-2 lg:px-4 gap-4">
+
+        <a href="./main.html" class="flex items-center">
+          <img src="./svg/logo.svg" alt="Rick and Morty Logo" class="w-12 cursor-pointer shrink-0">
+        </a>
+
+        <div class="flex items-center w-full max-w-[480px] min-w-0">
+
+          <button id="search-btn" type="button" class="flex border border-r-0 border-gray-300 bg-[#F2F2F2] hover:bg-[#E5E5E5] py-1.5 px-3 rounded-l-full cursor-pointer">
+            <span class="material-symbols-outlined text-[#20232A]">
+              search
+            </span>
+          </button>
+
+          <input type="text" id="search" placeholder="Buscar..." class="flex-1 flex py-1.5 px-2 border border-gray-300 outline-none rounded-r-full min-w-0">
+        </div>
+
+        <div class="flex items-center gap-2 sm:gap-3">
+
+          <button id="favorites" class="hidden sm:inline flex items-center bg-[#3B82F6] hover:bg-[#2563EB] active:bg-[#1D4ED8] py-2 px-3 rounded-md cursor-pointer">
+            <span class="flex items-center text-sm text-white font-semibold whitespace-nowrap">
+              Ver favoritos
+            </span>
+          </button>
+
+          <button id="logout" type="button" title="Cerrar sesión" class="flex items-center">
+            <span class="flex material-symbols-outlined !text-[36px] text-[#20232A] hover:bg-[#E5E5E5] rounded-full p-1 cursor-pointer">
+              logout
+            </span>
+          </button>
+
+          <a href="./account.html" class="flex items-center" title="Mi cuenta" aria-current="page">
+            <span class="flex material-symbols-outlined !text-[36px] text-[#3B82F6] bg-[#E5E5E5] rounded-full p-1 cursor-pointer">
+              account_circle
+            </span>
+          </a>
+
+          <span id="user-name" class="hidden sm:inline text-sm font-semibold text-[#20232A] max-w-[140px] truncate">
+            <!--Aqui va el nombre del usuario-->
+          </span>
+        </div>
+      </header>
+
+      <div class="flex-1 flex flex-col justify-start items-center py-8 px-8">
+
+        <form
+          action=""
+          id="form"
+          class="flex flex-col w-full max-w-[520px] bg-white rounded-lg p-6 shadow-md gap-7 border border-gray-300"
+        >
+
+          <h2 class="font-bold text-2xl text-center text-[#20232A]">
+            Mi cuenta
+          </h2>
+
+          <!--Datos personales-->
+          <fieldset class="flex flex-col border border-gray-400 p-6 gap-4 rounded-lg">
+            <legend class="text-sm text-[#20232A] font-semibold px-1">
+              Datos Personales
+            </legend>
+
+            <label for="nombre" class="text-md text-[#20232A] font-semibold flex flex-col">
+              Nombre
+              <input type="text" id="nombre" placeholder="Ej: Juan" class="border border-gray-400 rounded-lg py-2 px-2">
+              <p id="error-nombre" class="hidden text-[12px] font-semibold text-red-600 mt-1"></p>
+            </label>
+
+            <label for="apellido" class="text-md text-[#20232A] font-semibold flex flex-col">
+              Apellido
+              <input type="text" id="apellido" placeholder="Ej: Rodriguez" class="border border-gray-400 rounded-lg py-2 px-2">
+              <p id="error-apellido" class="hidden text-[12px] font-semibold text-red-600 mt-1"></p>
+            </label>
+
+            <label for="correo" class="text-md text-[#20232A] font-semibold flex flex-col">
+              Correo
+              <input type="text" id="correo" placeholder="Ej: juan@gmail.com" class="border border-gray-400 rounded-lg py-2 px-2">
+              <p id="error-correo" class="hidden text-[12px] font-semibold text-red-600 mt-1"></p>
+            </label>
+          </fieldset>
+
+          <!--Seguridad-->
+          <fieldset class="flex flex-col border border-gray-400 p-6 gap-4 rounded-lg">
+            <legend class="text-sm text-[#20232A] font-semibold px-1">
+              Seguridad
+            </legend>
+
+            <label for="clave" class="text-md text-[#20232A] font-semibold flex flex-col">
+              Contraseña
+              <input type="password" id="clave" placeholder="Dejar vacío para no cambiarla" class="border border-gray-400 rounded-lg py-2 px-2">
+              <span class="text-[11px] font-semibold text-gray-700">
+                Nota: Mínimo 8 caracteres, debe contener al menos 1 mayúscula, 1 minúscula, 1 número y 1 caracter especial.
+              </span>
+              <p id="error-clave" class="hidden text-[12px] font-semibold text-red-600 mt-1"></p>
+            </label>
+
+            <label for="validar" class="text-md text-[#20232A] font-semibold flex flex-col">
+              Validar Contraseña
+              <input type="password" id="validar" placeholder="Repite la contraseña nueva" class="border border-gray-400 rounded-lg py-2 px-2">
+              <p id="error-validar" class="hidden text-[12px] font-semibold text-red-600 mt-1"></p>
+            </label>
+          </fieldset>
+
+          <ul id="message" class="hidden">
+            <!--Aqui va el mensaje de exito-->
+          </ul>
+
+          <button type="submit" class="flex justify-center bg-[#3B82F6] hover:bg-[#2563EB] active:bg-[#1D4ED8] text-gray-100 font-semibold rounded-lg py-2 cursor-pointer">
+            Guardar cambios
+          </button>
+
+          <a href="./main.html" class="w-fit mx-auto text-[14px] text-gray-600 hover:text-[#3B82F6] hover:underline font-semibold p-1 px-3 rounded-full">
+            Volver al listado
+          </a>
+        </form>
+      </div>
+
+      <footer class="flex items-center justify-center w-full h-16 bg-white border-t border-gray-300 px-2 lg:px-4 gap-4">
+        <span class="text-md font-semibold text-gray-500">
+          © 2026 Rick & Morty Visualizer
+        </span>
+      </footer>
+    </div>
+    <script type="module" src="../js/account.js"></script>
+  </body>
+</html>
