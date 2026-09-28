@@ -1,21 +1,23 @@
 import { getCharacters } from "../services/characters.js";
 import { endpoints } from "../config/endpoints.js";
-import { getSession } from "./auth.js";
+import { getSession, logout } from "./auth.js";
 
 const cards = document.getElementById("cards-container");
 const btnPrev = document.getElementById("prev-page");
 const btnNext = document.getElementById("next-page");
 const pageIndicator = document.getElementById("page-indicator");
+const search = document.getElementById("search");
 
 /**
  * @async
  * @function showCharacters
  * 
  * @param {number} page Pagina que se le pide a la API, por defecto la primera
+ * @param {string} nombre Nombre a buscar, vacio para traer el listado completo
  * 
  * @description Inserta dentro de la etiqueta main todos los characters de la pagina pedida
  */
-async function showCharacters(page = 1) {
+async function showCharacters(page = 1, nombre = "") {
 
   // Se bloquean los botones mientras llegan los datos para no pedir paginas distintas a la vez
   btnPrev.disabled = true;
@@ -26,7 +28,7 @@ async function showCharacters(page = 1) {
   try {
 
     // La API devuelve 20 personajes por pagina, el total de paginas viene en data.info
-    const data = await getCharacters(`${endpoints.characters}?page=${page}`);
+    const data = await getCharacters(`${endpoints.characters}?page=${page}&name=${encodeURIComponent(nombre)}`);
 
     cards.innerHTML = "";
 
@@ -63,7 +65,13 @@ async function showCharacters(page = 1) {
     btnPrev.disabled = data.info.prev === null;
     btnNext.disabled = data.info.next === null;
   } catch (error) {
-    cards.innerHTML = `<p class="col-span-full text-center text-red-500 py-6">No se pudieron cargar los personajes.</p>`;
+    // La API responde 404 cuando el nombre no coincide con nadie, eso no es un fallo
+    if (error.status === 404) {
+      cards.innerHTML = `<p class="col-span-full text-center text-gray-500 py-6">No se encontraron personajes con ese nombre.</p>`;
+      pageIndicator.textContent = "Sin resultados";
+    } else {
+      cards.innerHTML = `<p class="col-span-full text-center text-red-500 py-6">No se pudieron cargar los personajes.</p>`;
+    }
     console.error(error);
   };
 };
@@ -78,27 +86,79 @@ function getPaginaActual() {
 };
 
 /**
+ * @function getNombreBusqueda
+ * 
+ * @description Saca el nombre buscado de la url, vacio si no hay busqueda activa
+ */
+function getNombreBusqueda() {
+  return new URLSearchParams(location.search).get("name") ?? "";
+};
+
+/**
  * @function irAPagina
  * 
  * @param {number} page Pagina a la que se quiere ir
- * 
- * @description Escribe la pagina en la url y pide esa pagina
+ *
+ * @description Escribe la pagina en la url conservando la busqueda y pide esa pagina
  */
 function irAPagina(page) {
-  history.pushState(null, "", `?page=${page}`);
-  showCharacters(page);
+  const nombre = getNombreBusqueda();
+  history.pushState(null, "", `?name=${encodeURIComponent(nombre)}&page=${page}`);
+  showCharacters(page, nombre);
+};
+
+/**
+ * @function buscar
+ * 
+ * @param {string} nombre Texto a buscar en el nombre del personaje
+ * 
+ * @description Guarda la busqueda en la url y vuelve a la primera pagina
+ */
+function buscar(nombre) {
+
+  const limpio = nombre.trim();
+
+  // Una busqueda vacia quita el filtro y deja el listado completo
+  if (limpio === "") {
+    history.pushState(null, "", "./main.html");
+    showCharacters(1, "");
+    return;
+  };
+
+  history.pushState(null, "", `?name=${encodeURIComponent(limpio)}&page=1`);
+  showCharacters(1, limpio);
 };
 
 btnPrev.addEventListener("click", () => irAPagina(getPaginaActual() - 1));
 btnNext.addEventListener("click", () => irAPagina(getPaginaActual() + 1));
 
-// El boton de atras del navegador cambia la url sin recargar, hay que escucharlo para pedir esa pagina
+// Al cerrar sesion se borra la sesion y auth.js se encarga de mandar al login
+document.getElementById("logout").addEventListener("click", () => {
+  logout();
+});
+
+// La busqueda se dispara con el boton de la lupa o con la tecla Enter
+document.getElementById("search-btn").addEventListener("click", () => {
+  buscar(search.value);
+});
+
+search.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    buscar(event.target.value);
+  }
+});
+
+// Esto es para los botones de atras y adelante del navegador, hay que escucharlo para pedir esa pagina
 window.addEventListener("popstate", () => {
-  showCharacters(getPaginaActual());
+  search.value = getNombreBusqueda();
+  showCharacters(getPaginaActual(), getNombreBusqueda());
 });
 
 const session = getSession();
 
 if (session) {
-  showCharacters(getPaginaActual());
+  document.getElementById("user-name").textContent = session.nombre;
+  // Se rellena el input con la busqueda de la url para no perderla al recargar
+  search.value = getNombreBusqueda();
+  showCharacters(getPaginaActual(), getNombreBusqueda());
 };
