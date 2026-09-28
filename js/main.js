@@ -1,12 +1,34 @@
 import { getCharacters } from "../services/characters.js";
 import { endpoints } from "../config/endpoints.js";
 import { getSession, logout } from "./auth.js";
+import { esFavorito, toggleFavorito } from "./almacenFavoritos.js";
 
 const cards = document.getElementById("cards-container");
 const btnPrev = document.getElementById("prev-page");
 const btnNext = document.getElementById("next-page");
 const pageIndicator = document.getElementById("page-indicator");
 const search = document.getElementById("search");
+
+// Se sube aqui porque el render de las tarjetas y el boton de favorito necesitan el correo
+const session = getSession();
+
+/**
+ * @function pintarBotonFavorito
+ *
+ * @param {object} boton Boton del corazon
+ * @param {boolean} esFav true si el personaje quedo como favorito
+ *
+ * @description Cambia el icono y el texto del boton segun el estado
+ */
+function pintarBotonFavorito(boton, esFav) {
+
+  const icono = boton.querySelector("span");
+
+  icono.textContent = esFav ? "favorite" : "favorite_border";
+  boton.title = esFav ? "Quitar de favoritos" : "Agregar a favoritos";
+  icono.classList.toggle("text-red-500", esFav);
+  icono.classList.toggle("text-[#20232A]", !esFav);
+};
 
 /**
  * @async
@@ -34,8 +56,10 @@ async function showCharacters(page = 1, nombre = "") {
 
     data.results.forEach((character) => {
 
+      const esFav = esFavorito(session.correo, character.id);
+
       const cardHTML = `
-        <article class="flex flex-col md:flex-row w-full bg-white rounded-md shadow-md overflow-hidden md:h-52">
+        <article class="relative flex flex-col md:flex-row w-full bg-white rounded-md shadow-md overflow-hidden md:h-52">
 
           <a href="./character.html?id=${character.id}" class="flex flex-col md:flex-row w-full h-full hover:bg-[#F3F4F6] transition-colors">
 
@@ -57,6 +81,17 @@ async function showCharacters(page = 1, nombre = "") {
             </div>
 
           </a>
+
+          <button
+            data-fav="${character.id}"
+            type="button"
+            title="${esFav ? "Quitar de favoritos" : "Agregar a favoritos"}"
+            class="absolute top-2 right-2 flex bg-white/90 hover:bg-white rounded-full p-1 shadow-md cursor-pointer"
+          >
+            <span class="material-symbols-outlined ${esFav ? "text-red-500" : "text-[#20232A]"}">
+              ${esFav ? "favorite" : "favorite_border"}
+            </span>
+          </button>
         </article>`;
 
       cards.insertAdjacentHTML("beforeend", cardHTML);
@@ -135,6 +170,19 @@ function buscar(nombre) {
 btnPrev.addEventListener("click", () => irAPagina(getPaginaActual() - 1));
 btnNext.addEventListener("click", () => irAPagina(getPaginaActual() + 1));
 
+// Un solo listener para todas las tarjetas, las cartas se vuelven a pintar en cada pagina
+// y con delegacion no hay que volver a colgar un listener por tarjeta
+cards.addEventListener("click", (event) => {
+
+  const boton = event.target.closest("[data-fav]");
+
+  if (!boton) {
+    return;
+  };
+
+  pintarBotonFavorito(boton, toggleFavorito(session.correo, boton.dataset.fav));
+});
+
 // Al cerrar sesion se borra la sesion y auth.js se encarga de mandar al login
 document.getElementById("logout").addEventListener("click", () => {
   logout();
@@ -156,8 +204,6 @@ window.addEventListener("popstate", () => {
   search.value = getNombreBusqueda();
   showCharacters(getPaginaActual(), getNombreBusqueda());
 });
-
-const session = getSession();
 
 if (session) {
   document.getElementById("user-name").textContent = session.nombre;

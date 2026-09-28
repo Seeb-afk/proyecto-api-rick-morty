@@ -1,6 +1,7 @@
 import { dataUsers, saveUsers } from "./users.js";
 import { getSession, saveSession, logout } from "./auth.js";
 import { regexes, campoVacio, correoEnUso } from "./validaciones.js";
+import { moverFavoritos } from "./almacenFavoritos.js";
 
 const formulario = document.getElementById("form");
 const mensaje = document.getElementById("message");
@@ -171,6 +172,9 @@ formulario.addEventListener("submit", (event) => {
   };
 
   saveUsers();
+
+  // Los favoritos se guardan con el correo como clave, hay que moverlos antes de cambiar la sesion
+  moverFavoritos(session.correo, datos.correo);
 
   // La sesion lleva correo y nombre, si no se actualiza el usuario desaparece al navegar
   saveSession({ correo: datos.correo, nombre: datos.nombre, apellido: datos.apellido });

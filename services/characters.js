@@ -23,6 +23,35 @@ export async function getCharacters(url = endpoints.characters) {
 
 /**
  * @async
+ * @function getCharactersByIds
+ * 
+ * @param {array} ids Ids de los personajes que se quieren
+ * 
+ * @description pide varios personajes en una sola llamada, la API los acepta separados por coma
+ */
+export async function getCharactersByIds(ids = []) {
+
+  // Sin ids la API devolveria el listado completo de personajes, hay que cortarlo antes
+  if (ids.length === 0) {
+    return [];
+  };
+
+  const response = await fetch(`${endpoints.characters}/${ids.join(",")}`);
+
+  if (!response.ok) {
+    const error = new Error(`Error ${response.status}: no se pudieron cargar los personajes.`);
+    error.status = response.status;
+    throw error;
+  };
+
+  const data = await response.json();
+
+  // Con un solo id la API responde un objeto suelto en vez de un array
+  return Array.isArray(data) ? data : [data];
+};
+
+/**
+ * @async
  * @function getCharacter
  * 
  * @param {string|number} id Id del personaje

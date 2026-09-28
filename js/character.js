@@ -1,8 +1,11 @@
 import { getCharacter } from "../services/characters.js";
 import { getSession, logout } from "./auth.js";
+import { esFavorito, toggleFavorito } from "./almacenFavoritos.js";
 
 const detail = document.getElementById("character-detail");
 const search = document.getElementById("search");
+
+const session = getSession();
 
 /**
  * @function getIdPersonaje
@@ -44,6 +47,8 @@ function irAlListado(nombre = "") {
  * @description Inserta dentro del main los datos ampliados del personaje
  */
 function showCharacter(character) {
+
+  const esFav = esFavorito(session.correo, character.id);
 
   detail.innerHTML = `
     <div class="flex flex-col md:flex-row">
@@ -90,11 +95,44 @@ function showCharacter(character) {
       </div>
     </div>
 
-    <div class="p-6 border-t border-gray-300">
+    <div class="flex flex-wrap items-center gap-3 p-6 border-t border-gray-300">
+      <button
+        data-fav="${character.id}"
+        type="button"
+        title="${esFav ? "Quitar de favoritos" : "Agregar a favoritos"}"
+        class="inline-flex items-center gap-2 border border-gray-300 hover:bg-[#E5E5E5] text-[#20232A] font-semibold text-sm py-2 px-4 rounded-md cursor-pointer"
+      >
+        <span class="material-symbols-outlined ${esFav ? "text-red-500" : "text-[#20232A]"}">
+          ${esFav ? "favorite" : "favorite_border"}
+        </span>
+        <span id="fav-label">
+          ${esFav ? "Quitar de favoritos" : "Agregar a favoritos"}
+        </span>
+      </button>
+
       <a href="./main.html" class="inline-flex items-center bg-[#3B82F6] hover:bg-[#2563EB] active:bg-[#1D4ED8] text-white font-semibold text-sm py-2 px-4 rounded-md">
         Volver al listado
       </a>
     </div>`;
+};
+
+/**
+ * @function pintarBotonFavorito
+ *
+ * @param {boolean} esFav true si el personaje quedo como favorito
+ *
+ * @description Cambia el icono y el texto del boton segun el estado
+ */
+function pintarBotonFavorito(esFav) {
+
+  const boton = detail.querySelector("[data-fav]");
+  const icono = boton.querySelector("span");
+
+  boton.title = esFav ? "Quitar de favoritos" : "Agregar a favoritos";
+  icono.textContent = esFav ? "favorite" : "favorite_border";
+  icono.classList.toggle("text-red-500", esFav);
+  icono.classList.toggle("text-[#20232A]", !esFav);
+  detail.querySelector("#fav-label").textContent = esFav ? "Quitar de favoritos" : "Agregar a favoritos";
 };
 
 /**
@@ -130,6 +168,18 @@ async function loadCharacter(id) {
   };
 };
 
+// Al toggle desde el detalle solo hay un boton, no hace falta delegar como en el listado
+detail.addEventListener("click", (event) => {
+
+  const boton = event.target.closest("[data-fav]");
+
+  if (!boton) {
+    return;
+  };
+
+  pintarBotonFavorito(toggleFavorito(session.correo, boton.dataset.fav));
+});
+
 // Al cerrar sesion se borra la sesion y auth.js se encarga de mandar al login
 document.getElementById("logout").addEventListener("click", () => {
   logout();
@@ -146,7 +196,6 @@ search.addEventListener("keydown", (event) => {
   }
 });
 
-const session = getSession();
 const id = getIdPersonaje();
 
 if (session) {
