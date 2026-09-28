@@ -1,6 +1,9 @@
 import { dataUsers } from "./users.js";
 import { saveSession } from "./auth.js";
 
+/**
+ * Pide datos al usuario para ingresar a la app, siempre que se encuentre registrado previamente
+ */
 let formularioLogin = document.getElementById("loginForm")
 formularioLogin.addEventListener("submit", (event) => {
 

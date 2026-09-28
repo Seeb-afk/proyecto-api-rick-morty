@@ -7,9 +7,6 @@ const btnPrev = document.getElementById("prev-page");
 const btnNext = document.getElementById("next-page");
 const pageIndicator = document.getElementById("page-indicator");
 
-// Pagina que se esta mostrando, cambia con los botones de la paginacion
-let paginaActual = 1;
-
 /**
  * @async
  * @function showCharacters
@@ -19,8 +16,6 @@ let paginaActual = 1;
  * @description Inserta dentro de la etiqueta main todos los characters de la pagina pedida
  */
 async function showCharacters(page = 1) {
-
-  paginaActual = page;
 
   // Se bloquean los botones mientras llegan los datos para no pedir paginas distintas a la vez
   btnPrev.disabled = true;
@@ -69,40 +64,41 @@ async function showCharacters(page = 1) {
     btnNext.disabled = data.info.next === null;
   } catch (error) {
     cards.innerHTML = `<p class="col-span-full text-center text-red-500 py-6">No se pudieron cargar los personajes.</p>`;
-    pageIndicator.textContent = `Página ${page}`;
-    btnPrev.disabled = paginaActual <= 1;
-    btnNext.disabled = false;
     console.error(error);
   };
 };
 
 /**
- * @function goPrevPage
+ * @function getPaginaActual
  * 
- * @description Pide la pagina anterior, el boton permanece deshabilitado en la primera
+ * @description Saca el numero de pagina de la url, si no esta escrito se asume la primera
  */
-function goPrevPage() {
-
-  if (paginaActual > 1) {
-    showCharacters(paginaActual - 1);
-  };
+function getPaginaActual() {
+  return Number(new URLSearchParams(location.search).get("page")) || 1;
 };
 
 /**
- * @function goNextPage
+ * @function irAPagina
  * 
- * @description Pide la pagina siguiente, el boton permanece deshabilitado en la ultima
+ * @param {number} page Pagina a la que se quiere ir
+ * 
+ * @description Escribe la pagina en la url y pide esa pagina
  */
-function goNextPage() {
-
-  showCharacters(paginaActual + 1);
+function irAPagina(page) {
+  history.pushState(null, "", `?page=${page}`);
+  showCharacters(page);
 };
 
-btnPrev.addEventListener("click", goPrevPage);
-btnNext.addEventListener("click", goNextPage);
+btnPrev.addEventListener("click", () => irAPagina(getPaginaActual() - 1));
+btnNext.addEventListener("click", () => irAPagina(getPaginaActual() + 1));
+
+// El boton de atras del navegador cambia la url sin recargar, hay que escucharlo para pedir esa pagina
+window.addEventListener("popstate", () => {
+  showCharacters(getPaginaActual());
+});
 
 const session = getSession();
 
 if (session) {
-  showCharacters();
+  showCharacters(getPaginaActual());
 };
