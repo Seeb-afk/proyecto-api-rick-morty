@@ -22,7 +22,7 @@ function pintarVacio() {
       <p class="text-gray-600 font-semibold">
         Todavia no agregaste ningun favorito.
       </p>
-      <a href="./main.html" class="inline-flex items-center bg-[#3B82F6] hover:bg-[#2563EB] active:bg-[#1D4ED8] text-white font-semibold text-sm py-2 px-4 rounded-md">
+      <a href="./index.html" class="inline-flex items-center bg-[#3B82F6] hover:bg-[#2563EB] active:bg-[#1D4ED8] text-white font-semibold text-sm py-2 px-4 rounded-md">
         Explorar personajes
       </a>
     </div>`;
@@ -120,11 +120,11 @@ function buscar(nombre) {
   const limpio = nombre.trim();
 
   if (limpio === "") {
-    window.location.href = "./main.html";
+    window.location.href = "./index.html";
     return;
   };
 
-  window.location.href = `./main.html?name=${encodeURIComponent(limpio)}`;
+  window.location.href = `./index.html?name=${encodeURIComponent(limpio)}`;
 };
 
 // Un solo listener para todas las tarjetas, aqui la accion es quitar y no cambiar el icono

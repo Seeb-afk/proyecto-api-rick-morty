@@ -125,11 +125,11 @@ function buscar(nombre) {
   const limpio = nombre.trim();
 
   if (limpio === "") {
-    window.location.href = "./main.html";
+    window.location.href = "./index.html";
     return;
   };
 
-  window.location.href = `./main.html?name=${encodeURIComponent(limpio)}`;
+  window.location.href = `./index.html?name=${encodeURIComponent(limpio)}`;
 };
 
 formulario.addEventListener("submit", (event) => {

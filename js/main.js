@@ -158,7 +158,7 @@ function buscar(nombre) {
 
   // Una busqueda vacia quita el filtro y deja el listado completo
   if (limpio === "") {
-    history.pushState(null, "", "./main.html");
+    history.pushState(null, "", "./index.html");
     showCharacters(1, "");
     return;
   };

@@ -32,11 +32,11 @@ function irAlListado(nombre = "") {
   const limpio = nombre.trim();
 
   if (limpio === "") {
-    window.location.href = "./main.html";
+    window.location.href = "./index.html";
     return;
   };
 
-  window.location.href = `./main.html?name=${encodeURIComponent(limpio)}`;
+  window.location.href = `./index.html?name=${encodeURIComponent(limpio)}`;
 };
 
 /**
@@ -110,7 +110,7 @@ function showCharacter(character) {
         </span>
       </button>
 
-      <a href="./main.html" class="inline-flex items-center bg-[#3B82F6] hover:bg-[#2563EB] active:bg-[#1D4ED8] text-white font-semibold text-sm py-2 px-4 rounded-md">
+      <a href="./index.html" class="inline-flex items-center bg-[#3B82F6] hover:bg-[#2563EB] active:bg-[#1D4ED8] text-white font-semibold text-sm py-2 px-4 rounded-md">
         Volver al listado
       </a>
     </div>`;
@@ -160,7 +160,7 @@ async function loadCharacter(id) {
     detail.innerHTML = `
       <p class="text-center text-gray-500 py-6">${mensaje}</p>
       <div class="p-6 border-t border-gray-300 text-center">
-        <a href="./main.html" class="inline-flex items-center bg-[#3B82F6] hover:bg-[#2563EB] text-white font-semibold text-sm py-2 px-4 rounded-md">
+        <a href="./index.html" class="inline-flex items-center bg-[#3B82F6] hover:bg-[#2563EB] text-white font-semibold text-sm py-2 px-4 rounded-md">
           Volver al listado
         </a>
       </div>`;
