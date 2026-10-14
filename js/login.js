@@ -59,6 +59,6 @@ formularioLogin.addEventListener("submit", (event) => {
   mensaje.innerHTML = `<ul class="text-green-100">Sesión iniciada correctamente.</ul>`;
 
   setTimeout(() => {
-    window.location.href = "../app/index.html";
+    window.location.href = "../docs/index.html";
   }, 2000);
 });
